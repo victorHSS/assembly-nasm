@@ -10,7 +10,10 @@ prog: main.o
 %.o: %.asm
 	$(AS) $(ASFLAGS) $^ -o $@
 
+autoremove:
+	rm -rf *o
+
 clean:
 	rm -rf *.o prog
 
-.PHONY: clean
+.PHONY: clean autoremove
