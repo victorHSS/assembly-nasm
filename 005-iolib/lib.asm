@@ -1,7 +1,8 @@
 global _start
 
 section .data
-	str: db 'uma string qualquer',0
+	str: db 'uma string qualquer', 0
+	str2: db 'outra string', 0
 
 section .text
 
@@ -11,7 +12,7 @@ _start:
 	call print_string
 	call print_newline
 
-	mov cx, [str + 1]
+	mov cl, [str + 1]
 	mov rdi, rcx
 
 	call print_char
@@ -19,6 +20,19 @@ _start:
 
 	mov rdi, 2131748178
 	call print_uint
+	call print_newline
+
+	mov rdi, -986518
+	call print_int
+	call print_newline
+
+	; testando string equals
+	mov rdi, str
+	mov rsi, str2
+	call string_equals
+	mov rdi, rax
+	call print_uint
+	call print_newline
 
 	call exit
 
@@ -101,7 +115,7 @@ print_uint:
 	cmp rax, 0
 	jnz .loop
 
-	lea rdi, [rcx]		; ok, já podia ter usado o rdi desde o inicio
+	lea rdi, [rcx]			; ok, já podia ter usado o rdi desde o inicio
 
 	call print_string
 
@@ -110,17 +124,47 @@ print_uint:
 
 
 print_int:
-    xor rax, rax
-    ret
+    test rdi, rdi
+    jns .num				; vai para .num se nao tiver sinal
+
+    push rdi
+    mov rdi, '-'
+	call print_char
+
+	pop rdi
+	neg rdi
+
+    .num:
+    jmp print_uint
+
+    ; nao precisa ret aqui
+
 
 string_equals:
-    xor rax, rax
+	xor r8, r8
+	xor rax, rax
+
+    .loop:
+    mov r9b, byte [rsi + r8]
+    cmp byte [rdi + r8], r9b
+    jnz .dif
+
+	test byte [rdi + r8], r9b ; ok, sao iguais, mas se forem zero, para
+	je .iguais
+
+	inc r8
+    jmp .loop
+
+    .iguais:
+    mov rax, 1
+
+    .dif:
     ret
 
 
 read_char:
     xor rax, rax
-    ret
+
 
 read_word:
     ret
