@@ -2,11 +2,9 @@ AS = nasm
 LD = ld
 ASFLAGS = -f elf64
 
-OARGS = *.o
-
 all: prog
 
-prog: $(OARGS)
+prog: lib.o
 	$(LD) $^ -o $@
 	
 %.o: %.asm
