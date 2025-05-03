@@ -11,7 +11,7 @@ prog: main.o
 	$(AS) $(ASFLAGS) $^ -o $@
 
 autoremove:
-	rm -rf *o
+	rm -rf *.o
 
 clean:
 	rm -rf *.o prog
