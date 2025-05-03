@@ -34,6 +34,12 @@ _start:
 	call print_uint
 	call print_newline
 
+	; testando read_char
+	call read_char
+	mov rdi, rax
+	call print_char
+	call print_newline
+
 	call exit
 
 
@@ -163,7 +169,17 @@ string_equals:
 
 
 read_char:
-    xor rax, rax
+    push 0			; aloco um byte na pilha
+
+	mov rax, 0		; chamada a read
+	mov rdi, 0		; ler stdin
+	mov rsi, rsp	; salvar no byffer
+	mov rdx, 1		; 1 byte
+	syscall
+
+	pop rax
+
+    ret
 
 
 read_word:
