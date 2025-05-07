@@ -4,6 +4,7 @@ section .data
 	str: db 'uma string qualquer', 0
 	str2: db 'outra string', 0
 	strnum: db '987654321', 0
+	strneg: db '-650001', 0
 
 section .text
 
@@ -46,6 +47,13 @@ _start:
 	call parse_uint
 	mov rdi, rax
 	call print_uint
+	call print_newline
+
+	; testando parse_int
+	mov rdi, strneg
+	call parse_int
+	mov rdi, rax
+	call print_int
 	call print_newline
 
 	call exit
@@ -224,9 +232,16 @@ parse_uint:
 ; rdi points to a string
 ; returns rax: number, rdx : length
 parse_int:
-    xor rax, rax
-    ret
+    cmp byte [rdi], '-'
+    jnz parse_uint
 
+    ; se ele for negativo
+    inc rdi
+    call parse_uint
+    neg rax
+    inc rdx
+
+    ret
 
 string_copy:
     ret
