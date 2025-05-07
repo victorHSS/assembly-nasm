@@ -3,6 +3,7 @@ global _start
 section .data
 	str: db 'uma string qualquer', 0
 	str2: db 'outra string', 0
+	strmsg: db 'Entre com algum caractere: ', 0
 	strnum: db '987654321', 0
 	strneg: db '-650001', 0
 	buffer: times 30 db 0
@@ -38,10 +39,12 @@ _start:
 	call print_newline
 
 	; testando read_char
-	;call read_char
-	;mov rdi, rax
-	;call print_char
-	;call print_newline
+	mov rdi, strmsg
+	call print_string
+	call read_char
+	mov rdi, rax
+	call print_char
+	call print_newline
 
 	; testando parse_uint
 	mov rdi, strnum
@@ -57,9 +60,8 @@ _start:
 	call print_int
 	call print_newline
 
-	.strcpy:
 	; testando string_copy
-	mov rdi, str
+	mov rdi, str2
 	mov rsi, buffer
 	mov rdx, 30
 	call string_copy
