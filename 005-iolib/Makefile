@@ -6,7 +6,7 @@ all: prog
 
 prog: lib.o
 	$(LD) $^ -o $@
-	
+
 %.o: %.asm
 	$(AS) $(ASFLAGS) $^ -o $@
 
