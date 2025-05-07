@@ -3,6 +3,7 @@ global _start
 section .data
 	str: db 'uma string qualquer', 0
 	str2: db 'outra string', 0
+	strnum: db '987654321', 0
 
 section .text
 
@@ -35,9 +36,16 @@ _start:
 	call print_newline
 
 	; testando read_char
-	call read_char
+	;call read_char
+	;mov rdi, rax
+	;call print_char
+	;call print_newline
+
+	; testando parse_uint
+	mov rdi, strnum
+	call parse_uint
 	mov rdi, rax
-	call print_char
+	call print_uint
 	call print_newline
 
 	call exit
@@ -188,7 +196,29 @@ read_word:
 ; rdi points to a string
 ; returns rax: number, rdx : length
 parse_uint:
-    xor rax, rax
+    xor rax, rax	; o numero resultante
+    xor r11, r11	; comprimento do numero em string
+	mov r12, 10
+
+	.parsing:
+	movzx rcx, byte [rdi + r11]
+	cmp rcx, 0x0
+	jz .end
+
+	sub rcx, '0'				; aqui, rcx ja contem o valor do digito
+
+	xor rdx, rdx
+	mul r12					; multiplicando valor base em rax por 10
+
+	and rcx, 0xff
+	add rax, rcx
+
+	inc r11
+	jmp .parsing
+
+    .end:
+    mov rdx, r11
+
     ret
 
 ; rdi points to a string
