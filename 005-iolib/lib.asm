@@ -5,6 +5,7 @@ section .data
 	str2: db 'outra string', 0
 	strnum: db '987654321', 0
 	strneg: db '-650001', 0
+	buffer: times 30 db 0
 
 section .text
 
@@ -55,6 +56,15 @@ _start:
 	mov rdi, rax
 	call print_int
 	call print_newline
+
+	.strcpy:
+	; testando string_copy
+	mov rdi, str
+	mov rsi, buffer
+	mov rdx, 30
+	call string_copy
+	mov rdi, rax
+	call print_string
 
 	call exit
 
@@ -243,5 +253,35 @@ parse_int:
 
     ret
 
+
+; rdi points to a string
+; rsi points to a buffer
+; rdx buffer length
 string_copy:
+	push rdi
+	push rsi
+	push rdx
+	call string_length
+	pop rdx
+
+	mov r8, rax
+	mov rax, 0
+	cmp rdx, r8
+	jbe .fim
+
+	pop rsi
+	pop rdi
+
+	mov rax, rsi
+	xor r9, r9
+
+	.loop:
+	mov r10b, byte [rdi + r9]
+	mov byte [rsi + r9], r10b
+	inc r9
+
+	cmp r8, r9
+	jnz .loop
+
+	.fim:
     ret
