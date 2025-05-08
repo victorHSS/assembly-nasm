@@ -234,7 +234,7 @@ read_word:
 	jz .next
 
 	cmp rax, 0x10
-	jz. next
+	jz .next
 
 	mov byte [rdi], al
 	inc rdi
