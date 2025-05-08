@@ -210,7 +210,44 @@ read_char:
     ret
 
 
+; rdi points to buffer
+; rsi buffer length
+
+; returns rax: rdi if ok, 0 else
 read_word:
+	mov r8, rdi		; salvo o endereço de rdi, inicio do buffer
+
+	.loop:
+	cmp rsi, 0		; chegou ao final do buffer, para e devolve zero
+	jz .fail
+
+	.next:
+	call read_char
+
+	cmp rax, 0x0
+	jz .success
+
+	cmp rax, 0x20
+	jz .next
+
+	cmp rax, 0x9
+	jz .next
+
+	cmp rax, 0x10
+	jz. next
+
+	mov byte [rdi], al
+	inc rdi
+	dec rsi
+	jmp .loop
+
+	.success:
+	mov byte [rdi], 0x0
+	mov rax, r8
+	ret
+
+	.fail:
+	xor rax, rax
     ret
 
 ; rdi points to a string
