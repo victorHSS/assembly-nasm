@@ -4,8 +4,9 @@
 global _start
 
 section .data
-	msgn: db "vNormal -> fat(5) = ", 0
-	msgr: db "vRecurs -> fatrec(5) = ", 0
+	num: db "num = ", 0
+	msgn: db "vNormal -> fat(num) = ", 0
+	msgr: db "vRecurs -> fatrec(num) = ", 0
 	msgp1: db "primo(2) = ", 0
 	msgp2: db "primo(4) = ", 0
 	filename: db "num.txt", 0
@@ -28,8 +29,12 @@ _start:
 
 	; printando conteudo lido
 	push rax
-	mov rdi, rax
+	mov rdi, num
 	call print_string
+	pop rdi
+	push rdi
+	call print_string
+	call print_newline
 
 	; fazendo parse para uint
 	pop rdi
