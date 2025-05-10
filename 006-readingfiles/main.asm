@@ -1,4 +1,5 @@
 %include "lib.asm"
+%include "file.asm"
 
 global _start
 
@@ -7,13 +8,37 @@ section .data
 	msgr: db "vRecurs -> fatrec(5) = ", 0
 	msgp1: db "primo(2) = ", 0
 	msgp2: db "primo(4) = ", 0
+	filename: db "num.txt", 0
+	buffer: times 30 db 0
 
 section .text
 
 _start:
+	; abrindo arquivo
+	mov rdi, filename
+	mov rsi, O_RDONLY
+	mov rdx, 0
+	call open
+
+	; lendo arquivo
+	mov rdi, rax
+	mov rsi, buffer
+	mov rdx, 30
+	call read_file
+
+	; printando conteudo lido
+	push rax
+	mov rdi, rax
+	call print_string
+
+	; fazendo parse para uint
+	pop rdi
+	call parse_uint
+	mov r8, rax
+
 	mov rdi, msgn
 	call print_string
-	mov rdi, 5
+	mov rdi, r8
 	call fat
 	mov rdi, rax
 	call print_uint
@@ -21,7 +46,7 @@ _start:
 
 	mov rdi, msgr
 	call print_string
-	mov rdi, 5
+	mov rdi, r8
 	call fatrec
 	mov rdi, rax
 	call print_uint
