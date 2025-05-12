@@ -5,13 +5,18 @@ global _start
 
 section .data
 	num: db "num = ", 0
+
+section .rodata
+
 	msgn: db "vNormal -> fat(num) = ", 0
 	msgr: db "vRecurs -> fatrec(num) = ", 0
 	msgp1: db "primo(2) = ", 0
 	msgp2: db "primo(4) = ", 0
 	filename: db "num.txt", 0
 	fibonaccistr: db "n-esimo fibonacci = ", 0
-	buffer: times 30 db 0
+
+section .bss
+	buffer: resb 30
 
 section .text
 
