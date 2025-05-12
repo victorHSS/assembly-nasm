@@ -1,9 +1,3 @@
-global exit
-global string_length, string_equals, string_copy
-global print_string, print_char, print_newline
-global print_uint, print_int
-global read_char, read_word
-global parse_int, parse_uint
 
 section .text
 

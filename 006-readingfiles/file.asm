@@ -1,5 +1,3 @@
-global open, read_file, close
-
 ; define algumas constantes para syscall open
 %define O_CREAT 0x40
 %define O_RDONLY 0x0
