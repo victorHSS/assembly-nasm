@@ -1,13 +1,13 @@
-%include "lib.asm"
-%include "file.asm"
-
 global _start
+extern open, read, print_string, read_file
+extern print_newline, print_uint, parse_uint, exit
+
+%define O_RDONLY 0
 
 section .data
 	num: db "num = ", 0
 
 section .rodata
-
 	msgn: db "vNormal -> fat(num) = ", 0
 	msgr: db "vRecurs -> fatrec(num) = ", 0
 	msgp1: db "primo(2) = ", 0
