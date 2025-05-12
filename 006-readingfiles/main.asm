@@ -1,8 +1,7 @@
 global _start
-extern open, read, print_string, read_file
-extern print_newline, print_uint, parse_uint, exit
 
-%define O_RDONLY 0
+%include "lib.asm"
+%include "file.asm"
 
 section .data
 	num: db "num = ", 0
@@ -14,7 +13,9 @@ section .rodata
 	msgp2: db "primo(4) = ", 0
 	filename: db "num.txt", 0
 	fibonaccistr: db "n-esimo fibonacci = ", 0
-	buffer: times 30 db 0
+
+section .bss
+	buffer: resb 30
 
 section .text
 

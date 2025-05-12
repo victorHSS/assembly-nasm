@@ -4,7 +4,7 @@ ASFLAGS = -f elf64
 
 all: prog
 
-prog: main.o lib.o file.o
+prog: main.o
 	$(LD) $^ -o $@
 
 %.o: %.asm
