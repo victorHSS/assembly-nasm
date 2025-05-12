@@ -1,8 +1,8 @@
 global _start
+extern open, read_file
+extern print_string, print_newline, print_uint, parse_uint, exit
 
-%include "lib.asm"
-%include "file.asm"
-
+%define O_RDONLY 0
 section .data
 	num: db "num = ", 0
 
