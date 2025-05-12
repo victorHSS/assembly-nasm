@@ -10,6 +10,7 @@ section .data
 	msgp1: db "primo(2) = ", 0
 	msgp2: db "primo(4) = ", 0
 	filename: db "num.txt", 0
+	fibonaccistr: db "n-esimo fibonacci = ", 0
 	buffer: times 30 db 0
 
 section .text
@@ -39,11 +40,11 @@ _start:
 	; fazendo parse para uint
 	pop rdi
 	call parse_uint
-	mov r8, rax
+	mov r12, rax
 
 	mov rdi, msgn
 	call print_string
-	mov rdi, r8
+	mov rdi, r12
 	call fat
 	mov rdi, rax
 	call print_uint
@@ -51,7 +52,7 @@ _start:
 
 	mov rdi, msgr
 	call print_string
-	mov rdi, r8
+	mov rdi, r12
 	call fatrec
 	mov rdi, rax
 	call print_uint
@@ -73,8 +74,43 @@ _start:
 	call print_uint
 	call print_newline
 
+	mov rdi, fibonaccistr
+	call print_string
+	mov rdi, r12
+	call fibonacci
+	mov rdi, rax
+	call print_uint
 	call exit
 
+; fibonacci
+; rdi - indice do numero fibonacci desejado
+; return rax - n-enesimo fibonacci
+fibonacci:
+	cmp rdi, 1
+	mov rax, 0
+	je .end
+
+	cmp rdi, 2
+	mov rax, 1
+	je .end
+
+	cmp rdi, 3
+	mov rax, 1
+	je .end
+
+	mov r8, 1
+	mov rcx, 3
+	.loop:
+	mov r9, rax
+	add rax, r8
+	mov r8, r9
+
+	inc rcx
+	cmp rdi, rcx
+	jne .loop
+
+	.end:
+	ret
 
 ; versao recursiva
 ; rdi - num
@@ -109,7 +145,7 @@ fat:
 	dec rdi
 
 	cmp rdi, 1
-	jnz .loop
+	ja .loop
 
 	.end:
 	ret
