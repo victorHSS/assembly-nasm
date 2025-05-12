@@ -14,9 +14,7 @@ section .rodata
 	msgp2: db "primo(4) = ", 0
 	filename: db "num.txt", 0
 	fibonaccistr: db "n-esimo fibonacci = ", 0
-
-section .bss
-	buffer: resb 30
+	buffer: times 30 db 0
 
 section .text
 
