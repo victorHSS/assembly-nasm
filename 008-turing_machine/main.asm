@@ -6,57 +6,88 @@
 global _start
 
 section .data
-	txt: db "Entre com uma sequencia de 0s e 1s (q para finalizar):", 0
-	error: db "Caractere invalido...", 13, 0
+	binary: db "1010101", 0
+	info: db "Analisando sequencia binaria...", 10, 0
+	result: db "O numero de 1s eh ", 0
+	par: db "Par", 10, 0
+	impar: db "Impar", 10, 0
+	error: db "Presenca de caractere invalido...", 10, 0
 	
-section .bss
-	char: resb 1
-
 section .text
 
 _start:
-	mov rdi, txt
+	mov rdi, info
 	call print_string
 	
+	mov rdi, binary
+	call print_string
+	call print_newline
+	
+	mov rdi, binary
 	call even_odd
 	
-	mov rdi, rax
-	call print_int
-	call print_newline
-
+	cmp rax, 0
+	je .par
+	
+	cmp rax, 1
+	je .impar
+	
+	mov rdi, error
+	call print_string
+	
+	jmp .end
+	
+	.par:
+	mov rdi, result
+	call print_string
+	mov rdi, par
+	call print_string
+	
+	jmp .end
+	
+	.impar
+	mov rdi, result
+	call print_string
+	mov rdi, impar
+	call print_string
+	
+	jmp .end
+	
+	.end:
 	call exit
 
+; rdi: string binary ptr
 ; return rax: 0 (even) or 1 (odd) or -1 (error)
 even_odd:
-	mov rdi, char
+	dec rdi
 	
 	.A:
 	
-	call read_char
+	inc rdi
 	
-	cmp al, '1'
+	cmp [rdi], byte '1'
 	je .B
 	
-	cmp al, '0'
+	cmp [rdi], byte '0'
 	je .A
 	
-	cmp al, 'q'
-	jne .E
+	cmp [rdi], byte 0
+	jne .E	
 	
 	mov rax, 0
 	ret
 	
 	.B:
 	
-	call read_char
+	inc rdi
 	
-	cmp al, '1'
+	cmp [rdi], byte '1'
 	je .A
 	
-	cmp al, '0'
+	cmp [rdi], byte '0'
 	je .B
 	
-	cmp al, 'q'
+	cmp [rdi], byte 0
 	jne .E
 	
 	mov rax, 1
